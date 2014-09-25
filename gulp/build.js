@@ -62,15 +62,14 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('partials', function () {
-  return gulp.src('app/partials/**/*.html')
+  return gulp.src(['app/**/*.html', '!app/bower_components/**/*', '!app/{index,404}.html'])
     .pipe($.minifyHtml({
       empty: true,
       spare: true,
       quotes: true
     }))
     .pipe($.ngHtml2js({
-      moduleName: 'gulp',
-      prefix: 'partials/'
+      moduleName: 'gulp'
     }))
     .pipe(gulp.dest('.tmp/partials'))
     .pipe($.size());
@@ -92,7 +91,7 @@ gulp.task('html', ['styles', 'scripts', 'partials', 'images'], function () {
     .pipe($.rev())
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
-    .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
+    // .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
     .pipe($.replace('bower_components/bootstrap-sass-official/assets/fonts/bootstrap','../fonts'))

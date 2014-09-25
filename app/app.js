@@ -5,7 +5,7 @@ angular.module('gulp', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'rest
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'partials/main.html',
+        templateUrl: 'main/main.html',
         controller: 'MainCtrl'
       });
 
