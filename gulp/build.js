@@ -12,10 +12,10 @@ function handleError(err) {
 }
 
 var paths = {
-  partials:   ['!./app/index.html', './app/**/*.html', '!./app/bower_components/**'],
-  scripts:    ['!./app/**/*_test.[tj]s', './app/**/*.[tj]s', '!./app/**/*.d.ts', '!./app/bower_components/**', '!./app/components/scripts/**'],
+  partials:   ['app/**/*.html', '!app/bower_components/**/*', '!app/{index,404}.html'],
+  scripts:    ['app/**/*.[jt]s', 'app/**/*_test.[jt]s', '!app/**/*.d.ts', '!app/bower_components/**', '!app/components/scripts/**'],
   images:     './app/components/lib/images/**/*',
-  styles:     ['./app/**/*.{sc,c}ss', '!./app/bootstrap.{sc,c}ss', '!./app/bower_components/**', '!./app/components/scripts/**'],
+  styles:     ['app/**/*.scss', '!app/bower_components/**/*', '!app/vendor.scss', '!/app/components/scripts/**'],
   vendor: {
     styles:   'app/vendor.scss',
     scripts:  $.mainBowerFiles()
@@ -23,7 +23,7 @@ var paths = {
 };
 
 gulp.task('vendor-styles', function () {
-  return gulp.src('app/vendor.scss')
+  return gulp.src(paths.vendor.styles)
     .pipe($.rubySass({style: 'expanded'}))
     .on('error', handleError)
     .pipe($.autoprefixer('last 1 version'))
@@ -32,7 +32,7 @@ gulp.task('vendor-styles', function () {
 });
 
 gulp.task('styles', ['vendor-styles'], function () {
-  return gulp.src(['app/**/*.scss', '!app/bower_components/**/*', '!app/vendor.scss'])
+  return gulp.src(paths.styles)
     .pipe($.rubySass({style: 'expanded'}))
     .on('error', handleError)
     .pipe($.autoprefixer('last 1 version'))
@@ -42,7 +42,7 @@ gulp.task('styles', ['vendor-styles'], function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src(['app/**/*.[jt]s', '!app/bower_components/**/*'])
+  return gulp.src(paths.scripts)
     .pipe(
       $.if(/[.]js/,
         $.jshint()
@@ -62,7 +62,7 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('partials', function () {
-  return gulp.src(['app/**/*.html', '!app/bower_components/**/*', '!app/{index,404}.html'])
+  return gulp.src(paths.partials)
     .pipe($.minifyHtml({
       empty: true,
       spare: true,
