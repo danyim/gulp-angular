@@ -14,14 +14,13 @@ function handleError(err) {
 var paths = {
   templates:  ['!./app/index.html', './app/**/*.html', '!./app/bower_components/**'],
   scripts: ['!./app/**/*_test.[tj]s', './app/**/*.[tj]s', '!./app/**/*.d.ts', '!./app/bower_components/**', '!./app/components/scripts/**'],
-  images:     'client/img/**/*',
+  images:     './app/components/lib/images/**/*',
   styles: ['./app/**/*.{sc,c}ss', '!./app/bootstrap.{sc,c}ss', '!./app/bower_components/**', '!./app/components/scripts/**'],
   vendor:   {
     styles:   './app/bootstrap.{sc,c}ss',
     scripts: $.mainBowerFiles()
   }
 };
-
 gulp.task('styles', function () {
   return gulp.src('app/styles/*.scss')
     .pipe($.rubySass({style: 'expanded'}))
@@ -53,7 +52,7 @@ gulp.task('partials', function () {
     .pipe($.size());
 });
 
-gulp.task('html', ['styles', 'scripts', 'partials'], function () {
+gulp.task('html', ['styles', 'scripts', 'partials', 'images'], function () {
   var jsFilter = $.filter('**/*.js');
   var cssFilter = $.filter('**/*.css');
   var assets;
@@ -83,12 +82,14 @@ gulp.task('html', ['styles', 'scripts', 'partials'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
-      optimizationLevel: 3,
-      progressive: true,
-      interlaced: true
-    })))
+  //return gulp.src('app/images/**/*')
+  return gulp.src(paths.images)
+    .pipe($.imagemin({
+        optimizationLevel: 3,
+        progressive: true,
+        interlaced: true
+    }))
+    .pipe(gulp.dest('.tmp/images'))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size());
 });

@@ -36,6 +36,14 @@ function browserSyncInit(baseDir, files, browser) {
 
 }
 
+proxy.on('error', function (err, req, res) {
+  res.writeHead(404, {
+    'Content-Type': 'text/plain'
+  });
+
+  res.end('File not found');
+});
+
 gulp.task('serve', ['watch'], function () {
   browserSyncInit([
     'app',
@@ -46,7 +54,7 @@ gulp.task('serve', ['watch'], function () {
     '.tmp/styles/**/*.css',
     'app/scripts/**/*.js',
     'app/partials/**/*.html',
-    'app/images/**/*'
+    '.tmp/images/**/*'
   ]);
 });
 

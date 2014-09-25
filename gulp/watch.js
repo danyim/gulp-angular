@@ -2,9 +2,9 @@
 
 var gulp = require('gulp');
 
-gulp.task('watch', ['wiredep', 'styles'] ,function () {
+gulp.task('watch', ['wiredep', 'styles', 'images'] ,function () {
   gulp.watch('app/styles/**/*.scss', ['styles']);
   gulp.watch('app/scripts/**/*.js', ['scripts']);
-  gulp.watch('app/images/**/*', ['images']);
+  gulp.watch('app/components/lib/images/**/*', ['images']);
   gulp.watch('bower.json', ['wiredep']);
 });
