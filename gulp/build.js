@@ -12,13 +12,13 @@ function handleError(err) {
 }
 
 var paths = {
-  templates:  ['!./app/index.html', './app/**/*.html', '!./app/bower_components/**'],
-  scripts: ['!./app/**/*_test.[tj]s', './app/**/*.[tj]s', '!./app/**/*.d.ts', '!./app/bower_components/**', '!./app/components/scripts/**'],
+  partials:   ['!./app/index.html', './app/**/*.html', '!./app/bower_components/**'],
+  scripts:    ['!./app/**/*_test.[tj]s', './app/**/*.[tj]s', '!./app/**/*.d.ts', '!./app/bower_components/**', '!./app/components/scripts/**'],
   images:     './app/components/lib/images/**/*',
-  styles: ['./app/**/*.{sc,c}ss', '!./app/bootstrap.{sc,c}ss', '!./app/bower_components/**', '!./app/components/scripts/**'],
-  vendor:   {
-    styles:   './app/bootstrap.{sc,c}ss',
-    scripts: $.mainBowerFiles()
+  styles:     ['./app/**/*.{sc,c}ss', '!./app/bootstrap.{sc,c}ss', '!./app/bower_components/**', '!./app/components/scripts/**'],
+  vendor: {
+    styles:   'app/vendor.scss',
+    scripts:  $.mainBowerFiles()
   }
 };
 
