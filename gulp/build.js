@@ -36,6 +36,7 @@ gulp.task('styles', ['vendor-styles'], function () {
     .pipe($.rubySass({style: 'expanded'}))
     .on('error', handleError)
     .pipe($.autoprefixer('last 1 version'))
+    .pipe($.concat('app.css'))
     .pipe(gulp.dest('.tmp/styles'))
     .pipe($.size());
 });
@@ -81,7 +82,7 @@ gulp.task('html', ['styles', 'scripts', 'partials', 'images'], function () {
     .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
-    .pipe($.replace('bower_components/bootstrap-sass-official/assets/fonts/bootstrap','fonts'))
+    .pipe($.replace('bower_components/bootstrap-sass-official/assets/fonts/bootstrap','../fonts'))
     .pipe($.csso())
     .pipe(cssFilter.restore())
     .pipe(assets.restore())
