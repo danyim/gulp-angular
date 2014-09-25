@@ -42,9 +42,22 @@ gulp.task('styles', ['vendor-styles'], function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('app/scripts/**/*.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
+  return gulp.src(['app/**/*.[jt]s', '!app/bower_components/**/*'])
+    .pipe(
+      $.if(/[.]js/,
+        $.jshint()
+        .pipe($.jshint.reporter('jshint-stylish'))
+      )
+    ).on('error', handleError)
+    // Perform a TSLint and parse as Typescript if it's a .ts file
+    .pipe(
+      $.if(/[.]ts/,
+        $.tslint()
+        .pipe($.tslint.report('verbose'))
+        .pipe($.typescript())
+      )
+    ).on('error', handleError)
+    .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.size());
 });
 
