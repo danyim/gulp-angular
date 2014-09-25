@@ -21,8 +21,18 @@ var paths = {
     scripts: $.mainBowerFiles()
   }
 };
-gulp.task('styles', function () {
-  return gulp.src('app/styles/*.scss')
+
+gulp.task('vendor-styles', function () {
+  return gulp.src('app/vendor.scss')
+    .pipe($.rubySass({style: 'expanded'}))
+    .on('error', handleError)
+    .pipe($.autoprefixer('last 1 version'))
+    .pipe(gulp.dest('.tmp/styles'))
+    .pipe($.size());
+});
+
+gulp.task('styles', ['vendor-styles'], function () {
+  return gulp.src(['app/**/*.scss', '!app/bower_components/**/*', '!app/vendor.scss'])
     .pipe($.rubySass({style: 'expanded'}))
     .on('error', handleError)
     .pipe($.autoprefixer('last 1 version'))
@@ -82,7 +92,6 @@ gulp.task('html', ['styles', 'scripts', 'partials', 'images'], function () {
 });
 
 gulp.task('images', function () {
-  //return gulp.src('app/images/**/*')
   return gulp.src(paths.images)
     .pipe($.imagemin({
         optimizationLevel: 3,
